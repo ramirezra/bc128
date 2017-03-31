@@ -9,7 +9,7 @@ import (
 )
 
 // Combine exported to main
-func Combine(i int, data []Data, lblPart *os.File, bcPart *os.File, bcSerial *os.File, lblSerial *os.File) {
+func Combine(i int, data []Data, lblPart image.Image, bcPart image.Image, bcSerial image.Image, lblSerial image.Image) {
 	// Combine template and barcode
 	template, err := os.Open("sample.png")
 	if err != nil {
@@ -35,32 +35,32 @@ func Combine(i int, data []Data, lblPart *os.File, bcPart *os.File, bcSerial *os
 	if err != nil {
 		fmt.Println(err)
 	}
-	partLabel, _, err := image.Decode(lblPart)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	partBarCode, _, err := image.Decode(bcPart)
-	if err != nil {
-		fmt.Println(err)
-	}
-	serialLabel, _, err := image.Decode(lblSerial)
-	if err != nil {
-		fmt.Println(err)
-	}
-	serialBarCode, _, err := image.Decode(bcSerial)
-	if err != nil {
-		fmt.Println(err)
-	}
+	// partLabel, _, err := image.Decode(lblPart)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	//
+	// partBarCode, _, err := image.Decode(bcPart)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// serialLabel, _, err := image.Decode(lblSerial)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// serialBarCode, _, err := image.Decode(bcSerial)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 
 	// create a new image
 	combined := image.NewRGBA(label.Bounds())
 	draw.Draw(combined, label.Bounds(), label, image.Point{0, 0}, draw.Src)
 
-	draw.Draw(combined, label.Bounds(), serialLabel, image.Point{-375, -1400}, draw.Src)
-	draw.Draw(combined, label.Bounds(), serialBarCode, image.Point{-375, -1475}, draw.Src)
-	draw.Draw(combined, label.Bounds(), partLabel, image.Point{-720, -1725}, draw.Src)
-	draw.Draw(combined, label.Bounds(), partBarCode, image.Point{-715, -1800}, draw.Src)
+	draw.Draw(combined, label.Bounds(), lblSerial, image.Point{-375, -1400}, draw.Src)
+	draw.Draw(combined, label.Bounds(), bcSerial, image.Point{-375, -1475}, draw.Src)
+	draw.Draw(combined, label.Bounds(), lblPart, image.Point{-720, -1725}, draw.Src)
+	draw.Draw(combined, label.Bounds(), bcPart, image.Point{-715, -1800}, draw.Src)
 
 	// Export image
 	output, err := os.Create("labels/" + data[i].PartNo + "-" + data[i].SerialNo + ".png")
