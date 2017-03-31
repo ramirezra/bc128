@@ -9,28 +9,28 @@ import (
 )
 
 // Combine exported to main
-func Combine(i int, data []Data) {
+func Combine(i int, data []Data, lblPart *os.File, bcPart *os.File, bcSerial *os.File, lblSerial *os.File) {
 	// Combine template and barcode
 	template, err := os.Open("sample.png")
 	if err != nil {
 		fmt.Println(err)
 	}
-	lblPart, err := os.Open("output/" + data[i].PartNo + "-Label.png")
-	if err != nil {
-		fmt.Println(err)
-	}
-	bcPart, err := os.Open("output/" + data[i].PartNo + ".png")
-	if err != nil {
-		fmt.Println(err)
-	}
-	lblSerial, err := os.Open("output/" + data[i].SerialNo + "-Label.png")
-	if err != nil {
-		fmt.Println(err)
-	}
-	bcSerial, err := os.Open("output/" + data[i].SerialNo + ".png")
-	if err != nil {
-		fmt.Println(err)
-	}
+	// lblPart, err := os.Open("output/" + data[i].PartNo + "-Label.png")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// bcPart, err := os.Open("output/" + data[i].PartNo + ".png")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// lblSerial, err := os.Open("output/" + data[i].SerialNo + "-Label.png")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// bcSerial, err := os.Open("output/" + data[i].SerialNo + ".png")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 	label, _, err := image.Decode(template)
 	if err != nil {
 		fmt.Println(err)
@@ -63,7 +63,7 @@ func Combine(i int, data []Data) {
 	draw.Draw(combined, label.Bounds(), partBarCode, image.Point{-715, -1800}, draw.Src)
 
 	// Export image
-	output, err := os.Create("labels/" + data[i].SerialNo + ".png")
+	output, err := os.Create("labels/" + data[i].PartNo + "-" + data[i].SerialNo + ".png")
 	if err != nil {
 		fmt.Println(err)
 	}
