@@ -10,6 +10,7 @@ import (
 
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/code128"
+	"github.com/fogleman/gg"
 )
 
 // Data exported to main function
@@ -54,6 +55,22 @@ func Encode128(data string) {
 		log.Fatal(err)
 	}
 	writeImage("output/"+data+".png", barcodeImage)
+}
+
+// EncodeLabel exported to main
+func EncodeLabel(data string) {
+	const W = 700
+	const H = 75
+	dc := gg.NewContext(W, H)
+	dc.SetRGB(1, 1, 1)
+	dc.Clear()
+	if err := dc.LoadFontFace("/Windows/Fonts/Arial.ttf", 72); err != nil {
+		log.Fatalln(err)
+		panic(err)
+	}
+	dc.SetRGB(0, 0, 0)
+	dc.DrawStringAnchored(data, W/2, H/2, 0.5, 0.5)
+	dc.SavePNG("output/" + data + "-Label.png")
 }
 
 func writeImage(filename string, img image.Image) {
